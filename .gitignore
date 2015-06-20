@@ -1,3 +1,7 @@
 .Rproj.user
 .Rhistory
 .RData
+PA_report1_cache/
+PA_report1_files/
+.DS_Store
+
