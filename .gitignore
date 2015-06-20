@@ -3,5 +3,7 @@
 .RData
 PA_report1_cache/
 PA_report1_files/
+PA_report2_cache/
+PA_report2_files/
 .DS_Store
 

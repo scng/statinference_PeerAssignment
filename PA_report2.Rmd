@@ -1,0 +1,61 @@
+---
+title: 'Statistical Inference: Peer Assessment, Part 2'
+author: "S C NG"
+date: "20 June, 2015"
+output: pdf_document
+---
+
+## Overview
+In the second portion of the assignment, we're going to analyze the ToothGrowth data in the R datasets package. We will use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose, and make the conclusion with assumptions needed.
+
+## Setup
+First of all, the following default settings and libraries are loaded
+```{r}
+#preset default options for Rmd, codes not shown in report
+require(knitr)
+opts_chunk$set(cache=TRUE, echo=TRUE)
+
+#load required libraries for data analysis
+require(ggplot2)
+require(datasets)
+```
+
+## Exploratory of Data
+According to the help page, the ToothGrowth dataset recorded the length of odontoblasts (teeth) in each of 10 guinea pigs at each of three dose levels of Vitamin C (0.5, 1, and 2 mg) with each of two delivery methods (orange juice or ascorbic acid).
+Below R code shows help page and the data structure of ToothGrowth dataset
+```{r}
+?ToothGrowth
+str(ToothGrowth)
+```
+The dataset consists of 60 observations on 3 variables: 
+1. len  (numeric) = Tooth length
+2. supp (factor) = Supplement type (VC or OJ).
+3. dose (numeric) = Dose in milligrams.
+
+Below boxplot summarize the distribution of Tooth length values per each three dose levels, 1 plot per each Supplement type
+```{r}
+g2 <- ggplot(data=ToothGrowth, aes(x=as.factor(dose), y=len, fill=supp)) 
+g2 <- g2 + geom_boxplot()
+g2 <- g2 + facet_grid(. ~ supp) 
+g2 <- g2 + xlab("Dose in miligrams") + ylab("Tooth length") 
+g2 <- g2 + guides(fill = guide_legend(title ="Supplement type"))
+ g2 <- g2 + ggtitle("Boxplot for Toothgrowth dataset")
+g2
+```
+
+## Data Analysis
+The following section tried to use confidence intervals and hypothesis tests to compare the tooth growth by supplement type and dose
+
+We will start with comparing the tooth length by supplement type through the following test in R
+```{r}
+t1 <- t.test(len~supp, paired = FALSE, var.equal = TRUE, data=ToothGrowth)
+t1
+```
+TODO: Analysis???
+
+Then we will check the tooth lenght by dose
+TODO: Analysis between len and dose???
+
+
+##Assumptions
+For the above tests, we assume the len values in the dataset are normally distributed
