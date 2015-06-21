@@ -43,7 +43,7 @@ g2
 The following section tried to use confidence intervals and hypothesis tests to compare the tooth growth by supplement type and dose
 
 ### Tooth Length by Supplement Type Under The Same Dose
-We will compare the effect on different different delivery types under the same dose level. First of all we will prepare separate datasets
+We will compare the effect on different delivery types under the same dose level. First of all we will prepare separate datasets
 ```{r}
 ToothGrowth.05.VC <- ToothGrowth[ToothGrowth$dose == 0.5 & ToothGrowth$supp == "VC", "len"]
 ToothGrowth.05.OJ <- ToothGrowth[ToothGrowth$dose == 0.5 & ToothGrowth$supp == "OJ", "len"]
