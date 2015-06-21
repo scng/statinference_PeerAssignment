@@ -14,7 +14,7 @@ We will investigate the distribution of averages of 40 exponentials with thousan
 
 ## Setup
 First of all, the following default settings and libraries are loaded
-```{r}
+```{r warning=FALSE}
 #preset default options for Rmd, codes not shown in report
 require(knitr)
 opts_chunk$set(cache=TRUE, echo=TRUE)
@@ -67,7 +67,9 @@ For this point, we focus on the difference between the distribution of a large c
 sample_df <- as.data.frame(exp_sample_means)
 g <- ggplot(sample_df, aes(x=exp_sample_means))
 g <- g + geom_histogram(aes(y = ..density..), binwidth=0.35, fill='blue', color='white')
-g <- g + stat_function(fun = dnorm, args=list(mean=1/lambda, sd=(1/lambda)/sqrt(sample_size)), bin_width=0.5, color='red')
+g <- g + stat_function(fun = dnorm, 
+    args=list(mean=1/lambda, sd=(1/lambda)/sqrt(sample_size)), 
+    bin_width=0.5, color='red')
 g <- g + ggtitle("Comparison between Distribution of Simulation and Normal Distribution")
 g <- g + xlab("mean") + ylab("density")
 g
