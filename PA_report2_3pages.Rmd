@@ -1,0 +1,72 @@
+---
+title: 'Statistical Inference: Peer Assessment, Part 2'
+author: "S C NG"
+date: "20 June, 2015"
+output: pdf_document
+geometry: margin=2cm
+---
+
+## Overview
+In the second portion of the assignment, we're going to analyze the ToothGrowth data in the R datasets package. We will use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose, and make the conclusion with assumptions needed.
+
+## Setup
+First of all, the following default settings and libraries are loaded
+```{r warning=FALSE}
+#preset default options for Rmd, codes not shown in report
+require(knitr)
+opts_chunk$set(cache=TRUE, echo=TRUE)
+
+#load required libraries for data analysis
+require(ggplot2)
+require(datasets)
+```
+
+## Exploratory of Data
+According to the help page, the ToothGrowth dataset recorded the length of odontoblasts (teeth) in each of 10 guinea pigs at each of three dose levels of Vitamin C (0.5, 1, and 2 mg) with each of two delivery methods (orange juice or ascorbic acid).
+Below R code shows help page and the data structure of ToothGrowth dataset
+```{r}
+?ToothGrowth
+str(ToothGrowth)
+```
+Below boxplot summarize the Tooth length values per each three dose levels, 1 plot per each Supplement type
+```{r}
+g2 <- ggplot(data=ToothGrowth, aes(x=as.factor(dose), y=len, fill=supp)) 
+g2 <- g2 + geom_boxplot()
+g2 <- g2 + facet_grid(. ~ supp) 
+g2 <- g2 + xlab("Dose in miligrams") + ylab("Tooth length") 
+g2 <- g2 + guides(fill = guide_legend(title ="Supplement type"))
+ g2 <- g2 + ggtitle("Boxplot for Toothgrowth dataset")
+g2
+```
+
+## Data Analysis
+The following section tried to use confidence intervals and hypothesis tests to compare the tooth growth by supplement type and dose
+
+### Tooth Length by Supplement Type Under The Same Dose
+We will compare the effect on different different delivery types under the same dose level. First of all we will prepare separate datasets
+```{r}
+ToothGrowth.05.VC <- ToothGrowth[ToothGrowth$dose == 0.5 & ToothGrowth$supp == "VC", "len"]
+ToothGrowth.05.OJ <- ToothGrowth[ToothGrowth$dose == 0.5 & ToothGrowth$supp == "OJ", "len"]
+ToothGrowth.10.VC <- ToothGrowth[ToothGrowth$dose == 1.0 & ToothGrowth$supp == "VC", "len"]
+ToothGrowth.10.OJ <- ToothGrowth[ToothGrowth$dose == 1.0 & ToothGrowth$supp == "OJ", "len"]
+ToothGrowth.20.VC <- ToothGrowth[ToothGrowth$dose == 2.0 & ToothGrowth$supp == "VC", "len"]
+ToothGrowth.20.OJ <- ToothGrowth[ToothGrowth$dose == 2.0 & ToothGrowth$supp == "OJ", "len"]
+```
+Then we will conduct t-tests to compare the effect of different delivery under the same dose
+```{r}
+t.05 <- t.test(ToothGrowth.05.VC, ToothGrowth.05.OJ, paired = FALSE)
+t.05
+t.10 <- t.test(ToothGrowth.10.VC, ToothGrowth.10.OJ, paired = FALSE)
+t.10
+t.20 <- t.test(ToothGrowth.20.VC, ToothGrowth.20.OJ, paired = FALSE)
+t.20
+```
+With doses 0.5 or 1.0 mg of Vitamin C, there are significant difference on the effect of tooth growth if we choose a different delivery method, since the 95% confidence intervals do not contain zero, and the p-values are lower than 0.05, and we can reject the null hypothesis.
+However, with dose 2.0 mg of Vitamin C, the difference on the effect of tooth growth is not significant if we change the delivery method, since the 95% confidence interval contains zero, and the p-value is higher than 0.05, and it is failed to reject the null hypothesis.
+
+##Conclusions
+With lower Vitamin C dose level (0.5 or 1.0 mg), the change of delivery method have significant effect on the tooth growth. However, the effect of delivery change may not significant when the dose level is higher (2.0 mg)
+
+##Assumptions
+For the above tests, we assume that the 60 guinea pigs in the sample are randomly sampled from the population that are normally distributed. The samples are all independent.
+
